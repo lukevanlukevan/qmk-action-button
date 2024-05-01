@@ -1,0 +1,66 @@
+{
+	"name": "qmk-action-button",
+	"displayName": "QMK Action Button",
+	"description": "Adds an action button to run and compile QMK based on the current open file.",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.88.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "qmk-action-button.compile",
+				"title": "QMK Compile"
+			},
+			{
+				"command": "qmk-action-button.flash",
+				"title": "QMK Flash"
+			},
+			{
+				"command": "qmk-action-button.menu",
+				"title": "QMK Actions",
+				"icon": {
+					"light": "./icons/light/qmk_icon.svg",
+					"dark": "./icons/dark/qmk_icon.svg"
+				}
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"command": "qmk-action-button.menu",
+					"group": "navigation",
+					"when": "editorTextFocus"
+				}
+			],
+			"qmk-action-button.menu": [
+				{
+					"command": "qmk-action-button.compile"
+				},
+				{
+					"command": "qmk-action-button.flash"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "yarn run lint",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.88.0",
+		"@types/mocha": "^10.0.6",
+		"@types/node": "18.x",
+		"eslint": "^8.57.0",
+		"typescript": "^5.4.5",
+		"@vscode/test-cli": "^0.0.8",
+		"@vscode/test-electron": "^2.3.9"
+	}
+}
+
