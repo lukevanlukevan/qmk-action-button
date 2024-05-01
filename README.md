@@ -3,6 +3,7 @@
 Adds context button to current open file to compile or flash your QMK firmware based on the current open file.
 
 Find it on [GitHub](https://github.com/lukevanlukevan/qmk-action-button).
+
 Find it on [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=LukeVan.qmk-action-button)
 
 ## Features
@@ -13,9 +14,14 @@ When editing a file, a button in the top right is created to both flash and comp
 
 ## Known Issues
 
-Does not currently allow for keymap selection if editing a file in base keyboard folder.
+Does not currently work with Docker containers or GitHub Codespaces.
 
-### 1.0.0
+### 0.1.0
+
+-   If inside a keyboard folder but not a keymap, prompt for keymap to use.
+-   Changed terminal name from "QMK Compile Terminal" to "QMK Terminal"
+
+### 0.0.1
 
 -   Initial release of QMK Action Button.
 
