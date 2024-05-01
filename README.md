@@ -3,6 +3,7 @@
 Adds context button to current open file to compile or flash your QMK firmware based on the current open file.
 
 Find it on [GitHub](https://github.com/lukevanlukevan/qmk-action-button).
+Find it on [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=LukeVan.qmk-action-button)
 
 ## Features
 
