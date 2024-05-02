@@ -12,7 +12,7 @@
 		"url": "https://github.com/lukevanlukevan/qmk-action-button"
 	},
 	"description": "Adds an action button to run and compile QMK based on the current open file.",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"engines": {
 		"vscode": "^1.88.0"
 	},
@@ -34,6 +34,26 @@
 						],
 						"default": "Paste and execute",
 						"description": "Behavior when clicking the QMK Action Button. Paste only is useful if extra arguments are needed for the command."
+					},
+					"qmkActionButton.compileExtra": {
+						"type": "string",
+						"default": "",
+						"description": "Command to append to compile command. Useful for adding extra arguments."
+					},
+					"qmkActionButton.flashExtra": {
+						"type": "string",
+						"default": "",
+						"description": "Command to append to flash command. Useful for adding extra arguments."
+					},
+					"qmkActionButton.showSplit": {
+						"type": "boolean",
+						"default": false,
+						"description": "Show flash option for split boards. Define split command below."
+					},
+					"qmkActionButton.splitCommand": {
+						"type": "string",
+						"default": "",
+						"markdownDescription": "Command to append to flash command when flashing split board. Use {side} for side of split board.\n\nExample: `-bl avrdude-split-{side}`"
 					}
 				}
 			}

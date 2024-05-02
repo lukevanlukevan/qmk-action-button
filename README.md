@@ -21,6 +21,11 @@ Does not currently work with Docker containers or GitHub Codespaces.
 
 ## Changelog
 
+### 0.1.2
+
+-   Added settings to show options for flashing sides.
+-   Added settings to show options extra arguments for compile and flash commands.
+
 ### 0.1.1
 
 -   Added settings to choose between "Paste and execute" and "Paste only".

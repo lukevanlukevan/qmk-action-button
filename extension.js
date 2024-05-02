@@ -39,8 +39,6 @@ async function getBoardInfo(filePath) {
 		})
 	}
 
-	console.log(boardName, keymapName)
-
 	return [boardName, keymapName]
 }
 
@@ -58,6 +56,14 @@ function getRunType() {
 	return runType
 }
 
+async function getExtraArgs(argKey) {
+	let settings = vscode.workspace.getConfiguration("qmkActionButton")
+
+	let extraArgs = settings.get(argKey)
+
+	return extraArgs
+}
+
 async function activate(context) {
 	let compileCommand = vscode.commands.registerCommand("qmk-action-button.compile", async function () {
 		let activeEditor = vscode.window.activeTextEditor
@@ -69,7 +75,7 @@ async function activate(context) {
 
 		let [boardName, keymapName] = await getBoardInfo(filePath)
 
-		console.log(boardName, keymapName)
+		let extraArgs = await getExtraArgs("compileExtra")
 
 		if (boardName === "" || keymapName === "") {
 			vscode.window.showErrorMessage("Could not find keymap. Open file in keymap directory.")
@@ -82,12 +88,12 @@ async function activate(context) {
 			terminal = vscode.window.createTerminal("QMK Terminal")
 		}
 
-		terminal.sendText(`qmk compile -kb ${boardName} -km ${keymapName}`, getRunType())
+		terminal.sendText(`qmk compile -kb ${boardName} -km ${keymapName}${extraArgs !== "" ? " " + extraArgs : ""}`, getRunType())
 
 		terminal.show()
 	})
 
-	let flashCommand = vscode.commands.registerCommand("qmk-action-button.flash", async function () {
+	let flashCommand = vscode.commands.registerCommand("qmk-action-button.flash", async function (flashType) {
 		let activeEditor = vscode.window.activeTextEditor
 		if (!activeEditor) {
 			return
@@ -97,6 +103,19 @@ async function activate(context) {
 
 		let [boardName, keymapName] = await getBoardInfo(filePath)
 
+		let extraArgs = await getExtraArgs("flashExtra")
+
+		if (flashType === "left" || flashType === "right") {
+			let precommand = await getExtraArgs("splitCommand")
+			extraArgs = precommand.replace("{side}", flashType)
+			console.log(extraArgs)
+
+			if (extraArgs === "") {
+				vscode.window.showErrorMessage("No split command defined. Please check extension settings.")
+				return
+			}
+		}
+
 		if (boardName === "" || keymapName === "") {
 			vscode.window.showErrorMessage("Could not find keymap. Open file in keymap directory.")
 			return
@@ -108,13 +127,21 @@ async function activate(context) {
 			terminal = vscode.window.createTerminal("QMK Terminal")
 		}
 
-		terminal.sendText(`qmk flash -kb ${boardName} -km ${keymapName}`, getRunType())
+		terminal.sendText(`qmk flash -kb ${boardName} -km ${keymapName}${extraArgs !== "" ? " " + extraArgs : ""}`, getRunType())
 
 		terminal.show()
 	})
 
 	let menuCommand = vscode.commands.registerCommand("qmk-action-button.menu", function () {
-		vscode.window.showQuickPick(["QMK Compile", "QMK Flash"]).then(async (selection) => {
+		let commandList = ["QMK Compile", "QMK Flash"]
+
+		let s = vscode.workspace.getConfiguration("qmkActionButton")
+		if (s.get("showSplit") === true) {
+			commandList.push("QMK Flash - Left")
+			commandList.push("QMK Flash - Right")
+		}
+
+		vscode.window.showQuickPick(commandList).then(async (selection) => {
 			if (!selection) return
 
 			switch (selection) {
@@ -123,6 +150,12 @@ async function activate(context) {
 					break
 				case "QMK Flash":
 					await vscode.commands.executeCommand("qmk-action-button.flash")
+					break
+				case "QMK Flash - Left":
+					await vscode.commands.executeCommand("qmk-action-button.flash", "left")
+					break
+				case "QMK Flash - Right":
+					await vscode.commands.executeCommand("qmk-action-button.flash", "right")
 					break
 			}
 		})
