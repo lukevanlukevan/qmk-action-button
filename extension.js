@@ -2,20 +2,6 @@ const vscode = require("vscode")
 const path = require("path")
 const fs = require("fs")
 
-async function getKeymap(boardPath) {
-	console.log(boardPath)
-	const folders = fs
-		.readdirSync(boardPath, { withFileTypes: true })
-		.filter((dirent) => dirent.isDirectory())
-		.map((dirent) => dirent.name)
-
-	vscode.window.showQuickPick(folders).then((selection) => {
-		if (!selection) return null
-
-		return selection
-	})
-}
-
 async function getBoardInfo(filePath) {
 	let sep = path.sep
 
