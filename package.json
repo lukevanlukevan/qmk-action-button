@@ -1,7 +1,7 @@
 {
 	"name": "qmk-action-button",
 	"displayName": "QMK Action Button",
-	"icon": "./icons/dark/qmk_icon.png",
+	"icon": "icons/dark/qmk_icon.png",
 	"publisher": "LukeVan",
 	"author": {
 		"name": "Luke Van",
@@ -12,7 +12,7 @@
 		"url": "https://github.com/lukevanlukevan/qmk-action-button"
 	},
 	"description": "Adds an action button to run and compile QMK based on the current open file.",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"engines": {
 		"vscode": "^1.88.0"
 	},
@@ -22,6 +22,22 @@
 	"activationEvents": [],
 	"main": "./extension.js",
 	"contributes": {
+		"configuration": [
+			{
+				"title": "QMK Action Button",
+				"properties": {
+					"qmkActionButton.runType": {
+						"type": "string",
+						"enum": [
+							"Paste and execute",
+							"Paste only"
+						],
+						"default": "Paste and execute",
+						"description": "Behavior when clicking the QMK Action Button. Paste only is useful if extra arguments are needed for the command."
+					}
+				}
+			}
+		],
 		"commands": [
 			{
 				"command": "qmk-action-button.compile",
@@ -35,8 +51,8 @@
 				"command": "qmk-action-button.menu",
 				"title": "QMK Actions",
 				"icon": {
-					"light": "./icons/light/qmk_icon.png",
-					"dark": "./icons/dark/qmk_icon.png"
+					"light": "icons/light/qmk_icon.png",
+					"dark": "icons/dark/qmk_icon.png"
 				}
 			}
 		],
@@ -73,4 +89,3 @@
 		"@vscode/test-electron": "^2.3.9"
 	}
 }
-

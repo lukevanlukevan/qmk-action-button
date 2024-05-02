@@ -58,6 +58,20 @@ async function getBoardInfo(filePath) {
 	return [boardName, keymapName]
 }
 
+function getRunType() {
+	let settings = vscode.workspace.getConfiguration("qmkActionButton")
+
+	let runType = false
+
+	if (settings.get("runType") === "Paste and execute") {
+		runType = true
+	} else {
+		runType = false
+	}
+
+	return runType
+}
+
 async function activate(context) {
 	let compileCommand = vscode.commands.registerCommand("qmk-action-button.compile", async function () {
 		let activeEditor = vscode.window.activeTextEditor
@@ -82,12 +96,12 @@ async function activate(context) {
 			terminal = vscode.window.createTerminal("QMK Terminal")
 		}
 
-		terminal.sendText(`qmk compile -kb ${boardName} -km ${keymapName}`)
+		terminal.sendText(`qmk compile -kb ${boardName} -km ${keymapName}`, getRunType())
 
 		terminal.show()
 	})
 
-	let flashCommand = vscode.commands.registerCommand("qmk-action-button.flash", function () {
+	let flashCommand = vscode.commands.registerCommand("qmk-action-button.flash", async function () {
 		let activeEditor = vscode.window.activeTextEditor
 		if (!activeEditor) {
 			return
@@ -95,7 +109,7 @@ async function activate(context) {
 
 		let filePath = activeEditor.document.uri.fsPath
 
-		let [boardName, keymapName] = getBoardInfo(filePath)
+		let [boardName, keymapName] = await getBoardInfo(filePath)
 
 		if (boardName === "" || keymapName === "") {
 			vscode.window.showErrorMessage("Could not find keymap. Open file in keymap directory.")
@@ -108,7 +122,7 @@ async function activate(context) {
 			terminal = vscode.window.createTerminal("QMK Terminal")
 		}
 
-		terminal.sendText(`qmk flash -kb ${boardName} -km ${keymapName}`)
+		terminal.sendText(`qmk flash -kb ${boardName} -km ${keymapName}`, getRunType())
 
 		terminal.show()
 	})
@@ -137,4 +151,3 @@ module.exports = {
 	activate,
 	deactivate,
 }
-

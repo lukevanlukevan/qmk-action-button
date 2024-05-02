@@ -12,9 +12,18 @@ When editing a file, a button in the top right is created to both flash and comp
 
 ![alt text](media/example.gif)
 
+-   Pick between Flash and Compile.
+-   Choose to paste and execute or just paste it into the terminal. (Extension settings)
+
 ## Known Issues
 
 Does not currently work with Docker containers or GitHub Codespaces.
+
+## Changelog
+
+### 0.1.1
+
+-   Added settings to choose between "Paste and execute" and "Paste only".
 
 ### 0.1.0
 
@@ -25,5 +34,4 @@ Does not currently work with Docker containers or GitHub Codespaces.
 
 -   Initial release of QMK Action Button.
 
-**Enjoy!**
-
+## **Enjoy!**
