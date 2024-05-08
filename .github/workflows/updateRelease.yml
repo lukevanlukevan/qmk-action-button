@@ -1,12 +1,19 @@
-on: [push]
+on:
+    push:
+        # Sequence of patterns matched against refs/tags
+        tags:
+            - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
 
-name: Create Release
+name: Upload Release Asset
 
 jobs:
     build:
-        name: Create Release
+        name: Upload Release Asset
         runs-on: ubuntu-latest
         steps:
+            - name: Build project # This would actually build your project, using zip for an example artifact
+              run: |
+                  zip --junk-paths my-artifact README.md
             - name: Create Release
               id: create_release
               uses: actions/create-release@v1
@@ -17,12 +24,24 @@ jobs:
                   release_name: Release ${{ github.ref }}
                   draft: false
                   prerelease: false
-            - name: Upload Release Asset
-              id: upload-release-asset
-              uses: actions/upload-release-asset@v1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Upload
+              uses: actions/github-script@v3
               with:
-                  upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-                  asset_path: ./qmk-action-button-*.vsix
-                  asset_name: qmk-action-button-*.vsix
+                  github-token: ${{secrets.GITHUB_TOKEN}}
+                  script: |
+                      const path = require('path');
+                      const fs = require('fs');
+                      const release_id = '${{ needs.create_release.outputs.id }}';
+                      for (let file of await fs.readdirSync('./')) {
+                        if (path.extname(file) === '.vsix') {
+                          console.log('uploadReleaseAsset', file);
+                          await github.repos.uploadReleaseAsset({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            release_id: release_id,
+                            name: file,
+                            data: await fs.readFileSync(`./${file}`)
+                          });
+                        }
+                      }
