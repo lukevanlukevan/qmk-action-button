@@ -21,6 +21,10 @@ Does not currently work with Docker containers or GitHub Codespaces.
 
 ## Changelog
 
+### 0.1.5
+
+-   Testing right click command for formatting _just_ keycodes to keep uniform spacing. Does not work correctly for keymaps with first row that do not have the same amount of keys as the rest of the keymap.
+
 ### 0.1.4
 
 -   If a single keymap exists, no prompt for keymap and just run.

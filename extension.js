@@ -69,6 +69,91 @@ async function getExtraArgs(argKey) {
 }
 
 async function activate(context) {
+	let columnCommand = vscode.commands.registerCommand("qmk-action-button.columnKeymap", async function () {
+		let activeEditor = vscode.window.activeTextEditor
+		if (!activeEditor) {
+			return
+		}
+
+		let selection = activeEditor.selection
+		let selectedText = activeEditor.document.getText(selection)
+
+		let leadingSpaces = selectedText.match(/^\s*/)[0].length
+
+		let commastate = false
+		if (selectedText.trim().endsWith(",")) {
+			commastate = true
+		}
+
+		console.log(commastate)
+
+		let lines = selectedText.split("\n")
+
+		let longest = 0
+
+		let lineArr = []
+
+		lines.map((line) => {
+			let wordArr = []
+			let words = line.split(",")
+
+			words
+				.filter((word) => word.trim() !== ",")
+				.map((word) => {
+					let clean = word.trim()
+					if (clean.length > longest) {
+						longest = clean.length
+					}
+					wordArr.push(clean)
+				})
+			lineArr.push(wordArr)
+		})
+
+		let padding = 2 + longest
+
+		let outputString = ""
+
+		let wcount = lineArr[0].length
+
+		lineArr.map((line, i) => {
+			let lineStr = ""
+
+			let linecount = line.length
+			let diff = wcount - linecount
+
+			let spacer = Math.floor(diff / 2)
+
+			line.map((word) => {
+				if (word !== "") {
+					lineStr += (word + ",").padEnd(padding)
+				}
+			})
+
+			if (diff !== 0) {
+				outputString += " ".repeat((spacer - 1) * padding)
+			}
+
+			outputString += lineStr
+			outputString += "\n"
+		})
+
+		let finalString = ""
+
+		console.log(commastate)
+
+		if (!commastate) {
+			let ind = outputString.lastIndexOf(",")
+
+			finalString = outputString.slice(0, ind)
+		} else {
+			finalString = outputString
+		}
+
+		activeEditor.edit((editBuilder) => {
+			editBuilder.replace(selection, finalString)
+		})
+	})
+
 	let compileCommand = vscode.commands.registerCommand("qmk-action-button.compile", async function () {
 		let activeEditor = vscode.window.activeTextEditor
 		if (!activeEditor) {
@@ -174,4 +259,3 @@ module.exports = {
 	activate,
 	deactivate,
 }
-
