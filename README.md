@@ -21,6 +21,10 @@ Does not currently work with Docker containers or GitHub Codespaces.
 
 ## Changelog
 
+### 0.1.3
+
+-   Fixed error causing button to only show on specific focus. Now persists if focus leaves text editor.
+
 ### 0.1.2
 
 -   Added settings to show options for flashing sides.
@@ -40,3 +44,4 @@ Does not currently work with Docker containers or GitHub Codespaces.
 -   Initial release of QMK Action Button.
 
 ## **Enjoy!**
+

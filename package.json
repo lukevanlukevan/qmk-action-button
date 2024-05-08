@@ -1,7 +1,7 @@
 {
 	"name": "qmk-action-button",
 	"displayName": "QMK Action Button",
-	"icon": "icons/dark/qmk_icon.png",
+	"icon": "./icons/dark/qmk_icon.png",
 	"publisher": "LukeVan",
 	"author": {
 		"name": "Luke Van",
@@ -12,7 +12,7 @@
 		"url": "https://github.com/lukevanlukevan/qmk-action-button"
 	},
 	"description": "Adds an action button to run and compile QMK based on the current open file.",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"engines": {
 		"vscode": "^1.88.0"
 	},
@@ -71,8 +71,8 @@
 				"command": "qmk-action-button.menu",
 				"title": "QMK Actions",
 				"icon": {
-					"light": "icons/light/qmk_icon.png",
-					"dark": "icons/dark/qmk_icon.png"
+					"light": "./icons/light/qmk_icon.png",
+					"dark": "./icons/dark/qmk_icon.png"
 				}
 			}
 		],
@@ -80,8 +80,7 @@
 			"editor/title": [
 				{
 					"command": "qmk-action-button.menu",
-					"group": "navigation",
-					"when": "editorTextFocus"
+					"group": "navigation"
 				}
 			],
 			"qmk-action-button.menu": [
@@ -109,3 +108,4 @@
 		"@vscode/test-electron": "^2.3.9"
 	}
 }
+
