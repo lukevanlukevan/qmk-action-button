@@ -1,7 +1,7 @@
 {
 	"name": "qmk-action-button",
 	"displayName": "QMK Action Button",
-	"icon": "./icons/dark/qmk_icon.png",
+	"icon": "icons/dark/qmk_icon.png",
 	"publisher": "LukeVan",
 	"author": {
 		"name": "Luke Van",
@@ -71,8 +71,8 @@
 				"command": "qmk-action-button.menu",
 				"title": "QMK Actions",
 				"icon": {
-					"light": "./icons/light/qmk_icon.png",
-					"dark": "./icons/dark/qmk_icon.png"
+					"light": "icons/light/qmk_icon.png",
+					"dark": "icons/dark/qmk_icon.png"
 				}
 			}
 		],
