@@ -32,6 +32,10 @@ async function getBoardInfo(filePath) {
 			.filter((dirent) => dirent.isDirectory())
 			.map((dirent) => dirent.name)
 
+		if (folders.length === 1) {
+			return [boardName, folders[0]]
+		}
+
 		keymapName = await vscode.window.showQuickPick(folders).then((selection) => {
 			if (!selection) return null
 
@@ -170,3 +174,4 @@ module.exports = {
 	activate,
 	deactivate,
 }
+
