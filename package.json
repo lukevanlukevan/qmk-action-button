@@ -12,7 +12,7 @@
 		"url": "https://github.com/lukevanlukevan/qmk-action-button"
 	},
 	"description": "Adds an action button to run and compile QMK based on the current open file.",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"engines": {
 		"vscode": "^1.88.0"
 	},
@@ -108,4 +108,3 @@
 		"@vscode/test-electron": "^2.3.9"
 	}
 }
-
