@@ -1,5 +1,4 @@
 name: Upload Release Asset
-
 on:
     push:
         tags:
