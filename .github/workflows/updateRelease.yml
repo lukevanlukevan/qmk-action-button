@@ -1,19 +1,15 @@
-on:
-    push:
-        # Sequence of patterns matched against refs/tags
-        tags:
-            - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
-
 name: Upload Release Asset
+
+on: push
 
 jobs:
     build:
         name: Upload Release Asset
         runs-on: ubuntu-latest
         steps:
-            - name: Build project # This would actually build your project, using zip for an example artifact
-              run: |
-                  zip --junk-paths my-artifact README.md
+            - name: Checkout code
+              uses: actions/checkout@v2
+
             - name: Create Release
               id: create_release
               uses: actions/create-release@v1
@@ -30,18 +26,24 @@ jobs:
               with:
                   github-token: ${{secrets.GITHUB_TOKEN}}
                   script: |
-                      const path = require('path');
                       const fs = require('fs');
-                      const release_id = '${{ needs.create_release.outputs.id }}';
+                      const path = require('path');
+                      const release_id = '${{ steps.create_release.outputs.id }}';
                       for (let file of await fs.readdirSync('./')) {
                         if (path.extname(file) === '.vsix') {
                           console.log('uploadReleaseAsset', file);
+                          const filePath = path.join('./', file);
+                          const fileData = fs.readFileSync(filePath);
                           await github.repos.uploadReleaseAsset({
                             owner: context.repo.owner,
                             repo: context.repo.repo,
                             release_id: release_id,
-                            name: file,
-                            data: await fs.readFileSync(`./${file}`)
+                            name: path.basename(file),
+                            data: fileData,
+                            headers: {
+                              'content-length': fileData.length,
+                              'content-type': 'application/octet-stream',
+                            },
                           });
                         }
                       }
